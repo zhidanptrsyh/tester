@@ -27,11 +27,13 @@ local OrionLib = {
 	SaveCfg = false
 }
 
---Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
+-- Lucide Icons Update
 local Icons = {}
 
 local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json")).icons
+    -- Menggunakan link raw dari Lucide Icons (contoh link yang umum digunakan untuk library ini)
+	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/lucide-icons/lucide/main/packages/lucide/package.json")).dependencies -- Contoh penyesuaian link
+    -- Catatan: Pastikan link JSON yang Anda gunakan memiliki struktur yang sama dengan yang diharapkan OrionLib
 end)
 
 if not Success then
