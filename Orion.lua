@@ -29,22 +29,17 @@ local OrionLib = {
 
 --Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
 local Icons = {}
-
-local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json")).icons
-end)
-
-if not Success then
-	warn("\nOrion Library - Failed to load Feather Icons. Error code: " .. Response .. "\n")
-end	
-
 local function GetIcon(IconName)
-	if Icons[IconName] ~= nil then
-		return Icons[IconName]
-	else
-		return nil
-	end
-end   
+    if IconName ~= nil and IconName ~= "" then
+        -- Jika inputnya angka (ID), tambahkan prefix rbxassetid
+        if tonumber(IconName) then
+            return "rbxassetid://" .. IconName
+        end
+        -- Jika inputnya sudah berupa string rbxassetid, langsung kembalikan
+        return IconName
+    end
+    return nil
+end
 
 local Orion = Instance.new("ScreenGui")
 Orion.Name = "Orion"
