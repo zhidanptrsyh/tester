@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PG = game:GetService("Players").LocalPlayer.PlayerGui
 local SoundService = game:GetService("SoundService")
+local TweenService = game:GetService("TweenService")
 
 local introGui = Instance.new("ScreenGui")
 introGui.Name = "IntroSystem"
