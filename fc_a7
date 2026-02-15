@@ -808,8 +808,8 @@ function Menghub:Window(GuiConfig)
 
     local displayName = game.Players.LocalPlayer.DisplayName
     local shortName = displayName
-    if #displayName > 4 then
-        shortName = string.sub(displayName, 1, 4) .. "..."
+    if #displayName > 2 then
+        shortName = string.sub(displayName, 1, 2) .. "..."
     end
     PlayerName.Text = "Welcome, " .. shortName
 
