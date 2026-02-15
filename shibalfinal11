@@ -808,8 +808,8 @@ function Menghub:Window(GuiConfig)
 
     local displayName = game.Players.LocalPlayer.DisplayName
     local shortName = displayName
-    if #displayName > 2 then
-        shortName = string.sub(displayName, 1, 2) .. "..."
+    if #displayName > 3 then
+        shortName = string.sub(displayName, 1, 3) .. "***"
     end
     PlayerName.Text = "Welcome, " .. shortName
 
@@ -1528,7 +1528,19 @@ function Menghub:Window(GuiConfig)
                     
                     local tweenInfo = TweenInfo.new(ANIM_TIME, ANIM_STYLE, ANIM_DIR)
                     
+                    OpenSection = not OpenSection
+                    
                     if OpenSection then
+                        TweenService:Create(SectionTitle, TweenInfo.new(0.2), { 
+                            TextColor3 = GuiConfig.Color 
+                        }):Play()
+                        
+                        UpdateSizeSection() 
+                        
+                        task.delay(ANIM_TIME, function()
+                            isAnimating = false
+                        end)
+                    else
                         TweenService:Create(SectionTitle, TweenInfo.new(0.2), { 
                             TextColor3 = Color3.fromRGB(230, 230, 230) 
                         }):Play()
@@ -1543,33 +1555,8 @@ function Menghub:Window(GuiConfig)
                             tween:Play()
                         end
                         
-                        OpenSection = false
                         task.delay(ANIM_TIME, function()
                             UpdateSizeScroll()
-                            isAnimating = false
-                        end)
-                    else
-                        for _, sec in ipairs(ScrolLayers:GetChildren()) do
-                            if sec:IsA("Frame") and sec.Name == "Section" then
-                                local realSec = sec:FindFirstChild("SectionReal")
-                                if realSec then
-                                    local title = realSec:FindFirstChild("SectionTitle")
-                                    if title and title:IsA("TextLabel") then
-                                        TweenService:Create(title, TweenInfo.new(0.2), { 
-                                            TextColor3 = Color3.fromRGB(230, 230, 230) 
-                                        }):Play()
-                                    end
-                                end
-                            end
-                        end
-                        
-                        TweenService:Create(SectionTitle, TweenInfo.new(0.2), { 
-                            TextColor3 = GuiConfig.Color 
-                        }):Play()
-                        
-                        OpenSection = true
-                        UpdateSizeSection()
-                        task.delay(ANIM_TIME, function()
                             isAnimating = false
                         end)
                     end
