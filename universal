@@ -604,30 +604,34 @@ function Menghub:Window(GuiConfig)
     TitleIcon.Size = UDim2.new(0, 20, 0, 20)
     TitleIcon.Image = GuiConfig.Icon
 
+    local ImageWrapper = Instance.new("Frame")
+    ImageWrapper.Name = "ImageWrapper"
+    ImageWrapper.Parent = Main
+    ImageWrapper.BackgroundTransparency = 1
+    ImageWrapper.Size = UDim2.new(1, 0, 1, 0)
+    ImageWrapper.Position = UDim2.new(0, 0, 0, 0)
+    ImageWrapper.ZIndex = 0
+    ImageWrapper.ClipsDescendants = true
+
     ThemeImage.Name = "ThemeImage"
-    ThemeImage.Parent = Main
-    ThemeImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ThemeImage.Parent = ImageWrapper
     ThemeImage.BackgroundTransparency = 1
-    
-    -- Mengatur posisi ke kanan dan ukuran agar tidak terlalu raksasa
-    ThemeImage.AnchorPoint = Vector2.new(1, 0.5)
-    ThemeImage.Position = UDim2.new(1, 0, 0.5, 0)
-    ThemeImage.Size = UDim2.new(0.7, 0, 1, 0) -- Hanya mengambil 70% lebar jendela
-    
+    ThemeImage.AnchorPoint = Vector2.new(1, 1)
+    ThemeImage.Position = UDim2.new(1, 0, 1, 0)
+    ThemeImage.Size = UDim2.new(0.55, 0, 1.0, 0) -- ga terlalu gede
     ThemeImage.ZIndex = 0
-    ThemeImage.Image = "rbxassetid://78769566766000"
-    
-    -- transparansi lebih halus agar UI tetap bersih
-    ThemeImage.ImageTransparency = 0.6 
-    
-    -- Menggunakan ScaleType Stretch atau Fit agar gambar menyesuaikan bingkai
-    ThemeImage.ScaleType = Enum.ScaleType.Crop
-    
-    -- Tambahkan UIGradient agar gambar menyatu dengan background (Fade effect)
+    ThemeImage.Image = "rbxassetid://75650154710506"
+    ThemeImage.ImageTransparency = 0.45
+    ThemeImage.ScaleType = Enum.ScaleType.Fit
+
+    -- Gradient diagonal (kiri + atas sekaligus, tanpa frame warna)
     local Gradient = Instance.new("UIGradient")
+    Gradient.Rotation = 135 -- sudut diagonal dari pojok kiri-atas
     Gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 1), -- Transparan di kiri
-        NumberSequenceKeypoint.new(1, 0)  -- Muncul di kanan
+        NumberSequenceKeypoint.new(0, 1),
+        NumberSequenceKeypoint.new(0.45, 0.8),
+        NumberSequenceKeypoint.new(0.75, 0.2),
+        NumberSequenceKeypoint.new(1, 0)
     })
     Gradient.Parent = ThemeImage
 
