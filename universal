@@ -616,20 +616,20 @@ function Menghub:Window(GuiConfig)
     ThemeImage.Name = "ThemeImage"
     ThemeImage.Parent = ImageWrapper
     ThemeImage.BackgroundTransparency = 1
-    ThemeImage.AnchorPoint = Vector2.new(0.5, 0.5) -- center
-    ThemeImage.Position = UDim2.new(0.5, 0, 0.5, 0) -- tengah window
-    ThemeImage.Size = UDim2.new(1, 0, 1, 0) -- full window
+    ThemeImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    ThemeImage.Position = UDim2.new(0.5, 0, 0.5, 0)   -- tengah panel
+    ThemeImage.Size = UDim2.new(1, 0, 1, 0)            -- full panel
     ThemeImage.ZIndex = 0
-    ThemeImage.Image = "rbxassetid://137969413789344"
-    ThemeImage.ImageTransparency = 0.45
-    ThemeImage.ScaleType = Enum.ScaleType.Crop -- Crop biar ga ada space kosong
+    ThemeImage.Image = "rbxassetid://76239481062153"
+    ThemeImage.ImageTransparency = 0.25
+    ThemeImage.ScaleType = Enum.ScaleType.Crop          -- CROP, bukan Fit
 
     local Gradient = Instance.new("UIGradient")
-    Gradient.Rotation = 135
+    Gradient.Rotation = 0
     Gradient.Transparency = NumberSequence.new({
         NumberSequenceKeypoint.new(0, 1),
-        NumberSequenceKeypoint.new(0.45, 0.8),
-        NumberSequenceKeypoint.new(0.75, 0.2),
+        NumberSequenceKeypoint.new(0.25, 0.85),
+        NumberSequenceKeypoint.new(0.55, 0.3),
         NumberSequenceKeypoint.new(1, 0)
     })
     Gradient.Parent = ThemeImage
