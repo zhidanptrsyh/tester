@@ -617,22 +617,34 @@ function Menghub:Window(GuiConfig)
     ThemeImage.Parent = ImageWrapper
     ThemeImage.BackgroundTransparency = 1
     ThemeImage.AnchorPoint = Vector2.new(0.5, 0.5)
-    ThemeImage.Position = UDim2.new(0.5, 0, 0.5, 0)   -- tengah panel
-    ThemeImage.Size = UDim2.new(1, 0, 1, 0)            -- full panel
+    ThemeImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ThemeImage.Size = UDim2.new(1, 0, 1, 0)
     ThemeImage.ZIndex = 0
     ThemeImage.Image = "rbxassetid://76239481062153"
-    ThemeImage.ImageTransparency = 0.25
-    ThemeImage.ScaleType = Enum.ScaleType.Crop          -- CROP, bukan Fit
+    ThemeImage.ImageTransparency = 0.55  -- lebih samar
+    ThemeImage.ScaleType = Enum.ScaleType.Crop
 
+    -- Gradient dari kiri (solid/gelap) ke kanan (keliatan dikit)
+    -- Biar konten kiri tetap terbaca, gambar hanya keliatan di kanan
     local Gradient = Instance.new("UIGradient")
-    Gradient.Rotation = 0
+    Gradient.Rotation = 90  -- atas ke bawah
     Gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 1),
-        NumberSequenceKeypoint.new(0.25, 0.85),
-        NumberSequenceKeypoint.new(0.55, 0.3),
-        NumberSequenceKeypoint.new(1, 0)
+        NumberSequenceKeypoint.new(0,    0.95),  -- atas: hampir hilang
+        NumberSequenceKeypoint.new(0.4,  0.75),  -- tengah atas: samar
+        NumberSequenceKeypoint.new(0.7,  0.45),  -- tengah bawah: mulai keliatan
+        NumberSequenceKeypoint.new(1,    0.2),   -- bawah: paling jelas
     })
     Gradient.Parent = ThemeImage
+
+    -- Overlay gelap di atas gambar biar text tetap readable
+    local Overlay = Instance.new("Frame")
+    Overlay.Name = "DarkOverlay"
+    Overlay.Parent = ImageWrapper
+    Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Overlay.BackgroundTransparency = 0.55  -- overlay hitam tipis
+    Overlay.BorderSizePixel = 0
+    Overlay.Size = UDim2.new(1, 0, 1, 0)
+    Overlay.ZIndex = 1  -- di atas gambar, di bawah konten
 
     TextLabel.Font = Enum.Font.GothamBold
     TextLabel.Text = GuiConfig.Title
