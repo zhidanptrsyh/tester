@@ -2360,6 +2360,7 @@ function Menghub:Window(GuiConfig)
                 CountItem = CountItem + 1
                 SliderFunc.Type = "Slider"
                 Elements[configKey] = SliderFunc
+                SliderFunc.Instance = Slider
                 return SliderFunc
             end
 
