@@ -624,15 +624,13 @@ function Menghub:Window(GuiConfig)
     ThemeImage.ImageTransparency = 0.55  -- lebih samar
     ThemeImage.ScaleType = Enum.ScaleType.Crop
 
-    -- Gradient dari kiri (solid/gelap) ke kanan (keliatan dikit)
-    -- Biar konten kiri tetap terbaca, gambar hanya keliatan di kanan
     local Gradient = Instance.new("UIGradient")
-    Gradient.Rotation = 90  -- atas ke bawah
+    Gradient.Rotation = 90
     Gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0,    0.95),  -- atas: hampir hilang
-        NumberSequenceKeypoint.new(0.4,  0.75),  -- tengah atas: samar
-        NumberSequenceKeypoint.new(0.7,  0.45),  -- tengah bawah: mulai keliatan
-        NumberSequenceKeypoint.new(1,    0.2),   -- bawah: paling jelas
+        NumberSequenceKeypoint.new(0,    0.95),
+        NumberSequenceKeypoint.new(0.4,  0.75),
+        NumberSequenceKeypoint.new(0.7,  0.45),
+        NumberSequenceKeypoint.new(1,    0.2),
     })
     Gradient.Parent = ThemeImage
 
@@ -1896,53 +1894,65 @@ function Menghub:Window(GuiConfig)
                 ButtonConfig.SubTitle = ButtonConfig.SubTitle or nil
                 ButtonConfig.SubCallback = ButtonConfig.SubCallback or function() end
 
-                local Button = Instance.new("Frame")
-                Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Button.BackgroundTransparency = 0.935
-                Button.Size = UDim2.new(1, 0, 0, 40)
-                Button.LayoutOrder = CountItem
-                Button.Parent = SectionAdd
+                -- Container Utama
+                local ButtonFrame = Instance.new("Frame")
+                ButtonFrame.BackgroundTransparency = 1 -- Kita bikin container transparan
+                ButtonFrame.Size = UDim2.new(1, 0, 0, 42) -- Sedikit lebih tinggi biar lega
+                ButtonFrame.LayoutOrder = CountItem
+                ButtonFrame.Parent = SectionAdd
 
-                local UICorner = Instance.new("UICorner")
-                UICorner.CornerRadius = UDim.new(0, 4)
-                UICorner.Parent = Button
+                -- Fungsi Helper untuk bikin Button yang cakep
+                local function CreateStyledButton(text, size, pos, callback)
+                    local Btn = Instance.new("TextButton")
+                    Btn.Parent = ButtonFrame
+                    Btn.Size = size
+                    Btn.Position = pos
+                    Btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    Btn.BackgroundTransparency = 0.95 -- Efek glass tipis
+                    Btn.Font = Enum.Font.GothamMedium -- Font lebih rapi dari Bold
+                    Btn.Text = text
+                    Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    Btn.TextSize = 13
+                    Btn.AutoButtonColor = false -- Kita handle manual animasinya
 
-                local MainButton = Instance.new("TextButton")
-                MainButton.Font = Enum.Font.GothamBold
-                MainButton.Text = ButtonConfig.Title
-                MainButton.TextSize = 12
-                MainButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                MainButton.TextTransparency = 0.3
-                MainButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                MainButton.BackgroundTransparency = 0.935
-                MainButton.Size = ButtonConfig.SubTitle and UDim2.new(0.5, -8, 1, -10) or UDim2.new(1, -12, 1, -10)
-                MainButton.Position = UDim2.new(0, 6, 0, 5)
-                MainButton.Parent = Button
+                    local Corner = Instance.new("UICorner")
+                    Corner.CornerRadius = UDim.new(0, 6) -- Lebih bulat dikit biar modern
+                    Corner.Parent = Btn
+                    
+                    -- Stroke tipis biar kelihatan premium
+                    local Stroke = Instance.new("UIStroke")
+                    Stroke.Color = Color3.fromRGB(255, 255, 255)
+                    Stroke.Transparency = 0.9
+                    Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                    Stroke.Parent = Btn
 
-                local mainCorner = Instance.new("UICorner")
-                mainCorner.CornerRadius = UDim.new(0, 4)
-                mainCorner.Parent = MainButton
+                    -- Animasi Sederhana
+                    Btn.MouseEnter:Connect(function()
+                        Btn.BackgroundTransparency = 0.9
+                        Stroke.Transparency = 0.8
+                    end)
+                    Btn.MouseLeave:Connect(function()
+                        Btn.BackgroundTransparency = 0.95
+                        Stroke.Transparency = 0.9
+                    end)
+                    Btn.MouseButton1Down:Connect(function()
+                        Btn.BackgroundTransparency = 0.85
+                    end)
+                    Btn.MouseButton1Up:Connect(function()
+                        Btn.BackgroundTransparency = 0.9
+                    end)
 
-                MainButton.MouseButton1Click:Connect(ButtonConfig.Callback)
+                    Btn.MouseButton1Click:Connect(callback)
+                    return Btn
+                end
 
                 if ButtonConfig.SubTitle then
-                    local SubButton = Instance.new("TextButton")
-                    SubButton.Font = Enum.Font.GothamBold
-                    SubButton.Text = ButtonConfig.SubTitle
-                    SubButton.TextSize = 12
-                    SubButton.TextTransparency = 0.3
-                    SubButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    SubButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    SubButton.BackgroundTransparency = 0.935
-                    SubButton.Size = UDim2.new(0.5, -8, 1, -10)
-                    SubButton.Position = UDim2.new(0.5, 2, 0, 5)
-                    SubButton.Parent = Button
-
-                    local subCorner = Instance.new("UICorner")
-                    subCorner.CornerRadius = UDim.new(0, 4)
-                    subCorner.Parent = SubButton
-
-                    SubButton.MouseButton1Click:Connect(ButtonConfig.SubCallback)
+                    -- Jika ada 2 button (Split 50/50)
+                    CreateStyledButton(ButtonConfig.Title, UDim2.new(0.5, -5, 1, -5), UDim2.new(0, 0, 0, 2.5), ButtonConfig.Callback)
+                    CreateStyledButton(ButtonConfig.SubTitle, UDim2.new(0.5, -5, 1, -5), UDim2.new(0.5, 5, 0, 2.5), ButtonConfig.SubCallback)
+                else
+                    -- Jika cuma 1 button (Full Width)
+                    CreateStyledButton(ButtonConfig.Title, UDim2.new(1, 0, 1, -5), UDim2.new(0, 0, 0, 2.5), ButtonConfig.Callback)
                 end
 
                 CountItem = CountItem + 1
